@@ -9,6 +9,7 @@ Output: data/docs_dedup.jsonl (documents kept)
 """
 import hashlib
 import json
+import re
 from collections import Counter
 from pathlib import Path
 
@@ -24,6 +25,8 @@ K = 3             # shingle size: groups of 3 consecutive words
 BOILERPLATE_SHARE = 0.1   # a line on 10%+ of the pages of one kind (and at least 4) counts as template
 MIN_WORDS = 25            # web pages with fewer words after cleaning are dropped
 NOTICE_MIN_WORDS = 8      # template lines this long are notices worth keeping once
+# legal pages (contracts, policies) are long and would crowd out useful answers in search
+LEGAL = re.compile(r"terms of (service|use)|privacy (policy|notice)|terms and conditions|legal notice", re.I)
 
 
 def sha(text):
@@ -88,7 +91,9 @@ if notices:
 kept_docs = []
 for d in docs:
     # help center answers are often short on purpose, so only web pages are checked
-    if d["id"].startswith("web:") and d["source"] != "site" and len(d["text"].split()) < MIN_WORDS:
+    if d["id"].startswith("web:") and LEGAL.search(d["title"]):
+        removed.append({**d, "duplicate_of": None, "reason": "legal"})
+    elif d["id"].startswith("web:") and d["source"] != "site" and len(d["text"].split()) < MIN_WORDS:
         removed.append({**d, "duplicate_of": None, "reason": "thin"})
     else:
         kept_docs.append(d)
@@ -163,6 +168,7 @@ with REMOVED.open("w", encoding="utf-8") as f:
 reasons = Counter(r["reason"] for r in removed)
 print(f"documents in:          {docs_in}")
 print(f"template lines found:  {len(boilerplate)}")
+print(f"legal pages dropped:   {reasons['legal']}")
 print(f"thin pages dropped:    {reasons['thin']}")
 print(f"exact duplicates:      {reasons['exact']}")
 print(f"near duplicates:       {reasons['near']}")
@@ -171,10 +177,10 @@ print(f"notices kept once:     {len(notices)}")
 for line in notices:
     print(f"  {line[:90]!r}")
 
-print("\nthin pages dropped:")
+print("\nlegal and thin pages dropped:")
 for r in removed:
-    if r["reason"] == "thin":
-        print(f"  {r['url']}")
+    if r["reason"] in ("legal", "thin"):
+        print(f"  {r['reason']:5}  {r['title'][:50]!r}  {r['url']}")
 
 print("\ntemplate lines removed (check these by hand):")
 for line in sorted(boilerplate)[:20]:
