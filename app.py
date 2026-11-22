@@ -13,8 +13,6 @@ from pathlib import Path
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).parent / "src"))   # so the modules in src/ can be imported
-import assistant  # noqa: E402
-from search import HybridSearch  # noqa: E402
 
 GITHUB_URL = "https://github.com/alexandratelescu/cardio-knowledge-assistant"
 EXAMPLES = [
@@ -23,9 +21,7 @@ EXAMPLES = [
     "Does coffee affect AFib?",
 ]
 
-MODEL = assistant.OLLAMA_MODEL if assistant.BACKEND == "ollama" else assistant.GROQ_MODEL
-
-st.set_page_config(page_title="Cardio Knowledge Assistant", layout="centered")
+st.set_page_config(page_title="Cardio Knowledge Assistant", page_icon="🫀", layout="centered")
 
 st.markdown("""
 <style>
@@ -70,9 +66,13 @@ a.source-card:hover { border-color: #D7263D; box-shadow: 0 2px 10px rgba(215, 38
 """, unsafe_allow_html=True)
 
 
-@st.cache_resource            # load the model and indexes once, not on every question
-def load_searcher():
-    return HybridSearch()
+@st.cache_resource(show_spinner=False)   # load once, not on every question; our own message is shown instead
+def load():
+    # imported here, not at the top: these libraries are slow to import, and importing them
+    # inside the spinner lets the page show a loading message first
+    import assistant
+    from search import HybridSearch
+    return assistant, HybridSearch()
 
 
 REASONS = {
@@ -126,7 +126,9 @@ def render(result, seconds=None):
     st.markdown(f'<div class="meta">{meta}</div>', unsafe_allow_html=True)
 
 
-searcher = load_searcher()
+with st.spinner("Loading the knowledge base (the first start can take up to a minute)..."):
+    assistant, searcher = load()
+MODEL = assistant.OLLAMA_MODEL if assistant.BACKEND == "ollama" else assistant.GROQ_MODEL
 n_docs = len({c["doc_id"] for c in searcher.chunks.values()})
 
 st.markdown(f"""
@@ -147,7 +149,7 @@ if "history" not in st.session_state:
 for question, result, seconds in st.session_state.history:
     with st.chat_message("user"):
         st.markdown(question)
-    with st.chat_message("assistant"):
+    with st.chat_message("assistant", avatar="🫀"):
         render(result, seconds)
 
 clicked = None
@@ -163,7 +165,7 @@ if question:
     examples.empty()
     with st.chat_message("user"):
         st.markdown(question)
-    with st.chat_message("assistant"):
+    with st.chat_message("assistant", avatar="🫀"):
         with st.spinner("Searching AliveCor's content..."):
             start = time.time()
             result = assistant.answer(question, searcher)
