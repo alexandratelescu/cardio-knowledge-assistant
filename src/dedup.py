@@ -27,6 +27,14 @@ MIN_WORDS = 25            # web pages with fewer words after cleaning are droppe
 NOTICE_MIN_WORDS = 8      # template lines this long are notices worth keeping once
 # legal pages (contracts, policies) are long and would crowd out useful answers in search
 LEGAL = re.compile(r"terms of (service|use)|privacy (policy|notice)|terms and conditions|legal notice", re.I)
+# some blog articles carry the blog's general title instead of their own
+GENERIC_TITLE = re.compile(r"heart health articles", re.I)
+
+
+def title_from_url(url):
+    """'.../blog/difference-between-kardia-ekgs' -> 'Difference between kardia ekgs'"""
+    slug = url.rstrip("/").rsplit("/", 1)[-1]
+    return slug.replace("-", " ").capitalize()
 
 
 def sha(text):
@@ -59,8 +67,12 @@ removed = []
 # ---------- 0. remove page template + thin pages ----------
 # each kind of page (blog, product, technology) has its own template, so look for it separately
 web = [d for d in docs if d["id"].startswith("web:")]
+fixed_titles = []
 for d in web:                                   # strip spaces, drop empty lines
     d["text"] = "\n".join(line.strip() for line in d["text"].splitlines() if line.strip())
+    if d["source"] == "blog" and GENERIC_TITLE.search(d["title"]):
+        d["title"] = title_from_url(d["url"])
+        fixed_titles.append(d["title"])
 
 boilerplate = set()
 for source in {d["source"] for d in web}:
@@ -176,6 +188,8 @@ print(f"documents kept:        {len(kept)}")
 print(f"notices kept once:     {len(notices)}")
 for line in notices:
     print(f"  {line[:90]!r}")
+
+print(f"\ngeneric titles fixed:  {fixed_titles}")
 
 print("\nlegal and thin pages dropped:")
 for r in removed:
