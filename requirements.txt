@@ -1,0 +1,9 @@
+requests
+beautifulsoup4
+trafilatura
+datasketch
+rank-bm25
+sentence-transformers
+chromadb
+streamlit
+pandas
