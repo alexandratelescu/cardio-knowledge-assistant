@@ -1,0 +1,22 @@
+question,expected_url,vector,bm25,hybrid
+Can Kardia detect a heart attack?,https://kardia.com/,yes,no,yes
+Does coffee affect AFib?,https://kardia.com/blog/caffeine-and-your-heart,yes,yes,yes
+How do I change the battery in KardiaMobile 6L?,https://alivecor.zendesk.com/hc/en-us/articles/1500005855261-How-do-I-change-or-replace-the-KardiaMobile-6L-battery,yes,yes,yes
+What is KardiaMobile 6L?,https://alivecor.zendesk.com/hc/en-us/articles/41713876392211-What-is-the-difference-between-the-KardiaMobile-6L-and-KardiaMobile-6L-Max,yes,yes,yes
+How accurate is KardiaMobile at detecting AFib?,https://kardia.com/blog/advanced-determinations,no,yes,yes
+Can I use KardiaMobile with an Android phone?,https://alivecor.zendesk.com/hc/en-us/articles/1500000449521-Compatibility,no,no,yes
+What heart rhythms can Kardia detect?,https://alivecor.zendesk.com/hc/en-us/articles/360000517567-Can-Kardia-Mobile-or-Kardia-Band-detect-Arrhythmias-other-than-AFIb,yes,yes,yes
+How do I clean my KardiaMobile device?,https://alivecor.zendesk.com/hc/en-us/articles/231584148-How-do-I-clean-my-Kardia-EKG-device,yes,yes,yes
+What should I do if my KardiaMobile isn't connecting to the app?,https://alivecor.zendesk.com/hc/en-us/articles/360026081453-What-to-do-if-I-see-a-Connect-to-your-KardiaMobile-6L-error-when-I-am-trying-to-record,yes,no,yes
+Does KardiaMobile need an internet connection to record an EKG?,https://alivecor.zendesk.com/hc/en-us/articles/115015799848--Do-I-need-phone-service-or-Wi-Fi-to-take-an-EKG-recording-on-my-KardiaMobile,yes,yes,yes
+What is normal sinus rhythm?,https://alivecor.zendesk.com/hc/en-us/articles/1500001627962-What-is-Normal-Sinus-Rhythm,yes,yes,yes
+What is the difference between KardiaMobile and KardiaMobile 6L?,https://alivecor.zendesk.com/hc/en-us/articles/360025026894-What-is-the-difference-between-the-KardiaMobile-and-the-KardiaMobile-6L,yes,yes,yes
+Can KardiaMobile detect bradycardia?,https://alivecor.zendesk.com/hc/en-us/articles/360025026894-What-is-the-difference-between-the-KardiaMobile-and-the-KardiaMobile-6L,no,yes,yes
+How long does an EKG recording take with Kardia?,https://kardia.com/recordekg,yes,no,yes
+Is Kardia FDA cleared?,https://alivecor.zendesk.com/hc/en-us/articles/115015799808-Is-Kardia-FDA-cleared-and-CE-marked,yes,yes,yes
+Can I share my Kardia EKG with my doctor?,https://kardia.com/blog/sharing-ekg-with-doctor,yes,yes,yes
+"What does a ""Possible AFib"" result mean on Kardia?",https://alivecor.zendesk.com/hc/en-us/articles/360021145673-Learn-more-about-a-Possible-Atrial-Fibrillation-EKG-Result,no,no,yes
+How many leads does KardiaMobile 6L record?,https://alivecor.zendesk.com/hc/en-us/articles/360025027794-What-are-the-different-leads-in-a-6-Lead-EKG,no,yes,yes
+Can I use Kardia while exercising?,https://alivecor.zendesk.com/hc/en-us/articles/115015772927-Activity-Monitor-on-Apple-Watch-shows-incorrect-readings,no,no,yes
+What is Kardia Premium / KardiaCare membership?,https://kardia.com/products/kardiacare,yes,no,yes
+How do I update the Kardia app?,https://alivecor.zendesk.com/hc/en-us/articles/4417709760659-What-version-of-the-Kardia-app-do-I-need-in-order-to-use-the-KardiaMobile-Card,yes,yes,yes

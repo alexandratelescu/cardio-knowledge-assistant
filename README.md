@@ -125,7 +125,21 @@ To use a hosted model instead of Ollama, set `LLM_BACKEND=groq` and `GROQ_API_KE
 
 ## Evaluation
 
-*Coming in task 2: 30 gold questions, retrieval and answer accuracy, and what improved them.*
+30 test questions (21 answerable, 4 out of scope, 3 asking for medical advice, 2 describing an
+emergency), checked with `eval/evaluate.py`. Full results and discussion in
+[`eval/report.md`](eval/report.md).
+
+| | Accuracy |
+|---|---|
+| Retrieval, hybrid search (correct source in top 5) | 21/21 (100%) |
+| Retrieval, vector search only | 15/21 (71%) |
+| Retrieval, BM25 only | 14/21 (67%) |
+| Answerable questions, correctly answered and cited | 20/21 (95%) |
+| Questions that should be refused, handled correctly | 9/9 (100%) |
+
+BM25 and vector search mostly fail on different questions, so combining them with RRF covers
+both and reaches full retrieval accuracy on this set. All out-of-scope, medical-advice and
+emergency questions were handled correctly.
 
 ## Limitations
 
@@ -133,6 +147,9 @@ To use a hosted model instead of Ollama, set `LLM_BACKEND=groq` and `GROQ_API_KE
 - Articles deleted from AliveCor's site are not removed from the knowledge base yet.
 - Time-limited content, like a Black Friday banner, is kept until the next update.
 - Product details that are loaded only by JavaScript are not collected.
+- The evaluation set is small (30 questions) and grades answers by citation match rather than by
+  reading every answer, so it can undercount a good answer that cites a different, also valid,
+  source. See `eval/report.md` for a case like this.
 
 ## Disclaimer
 
